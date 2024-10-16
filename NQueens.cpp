@@ -1,4 +1,3 @@
-// NEW CODE FOR FINDING ALL POSSIBLE SOLUTIONS !!
 //Naive Recursive Approach
 
 #include <iostream>
