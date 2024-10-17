@@ -1,4 +1,20 @@
-## Benchmarking Results
+## Benchmarking Results for all code without modifications
+
+| Board Size (N) | 1st Trial (seconds)      | 2nd Trial (seconds)      |
+|----------------|--------------------------|--------------------------|
+| 8              | 0.0005402                | 0.0007                   | 
+| 9              | 0.0027062                | 0.0026572                | 
+| 10             | 0.011859                 | 0.0116965                | 
+| 11             | 0.0564891                | 0.0695131                | 
+| 12             | 0.305196                 | 0.35401                  | 
+| 13             | 2.26089                  | 2.30633                  | 
+| 14             | 12.0875                  | 14.1735                  | 
+| 15             | 99.0735                  | 99.23                    | 
+| 16             | 724.58                   | 724.594                  |
+
+
+
+## Benchmarking Results for all the code after deleting print statements and 
 
 | Board Size (N) | Number of Solutions | 1st Trial (seconds)      | 2nd Trial (seconds)      |
 |----------------|---------------------|--------------------------|--------------------------|
