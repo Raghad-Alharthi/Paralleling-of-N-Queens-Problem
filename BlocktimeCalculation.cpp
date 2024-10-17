@@ -1,95 +1,109 @@
-#include <iostream>
 #include <vector>
-#include <chrono>  // Include for time measurement
-
+#include <iostream>
+#include <chrono>
 using namespace std;
 
-// Global variables to track isSafe function metrics
-int isSafeCallCount = 0;  // Counter for isSafe calls
-double totalIsSafeTime = 0.0;  // Total time for all isSafe calls
+chrono::duration<double> elapsed;
 
 // Function to check if the current placement is safe
-bool isSafe(const vector<int>& board, int currRow, int currCol) {
-    isSafeCallCount++;  // Increment the isSafe call counter
+bool isSafe(const vector<int>& board, int currRow,
+                                      int currCol) {
 
-    // Start timing for this isSafe call
-    auto start = chrono::high_resolution_clock::now();
+    // Check all previously placed queens
+    for(int i = 0; i < board.size(); ++i) {
+        int placedRow = board[i];
 
-    for (int col = 0; col < currCol; ++col) {
-        int placedRow = board[col];
-        if (placedRow == currRow || abs(placedRow - currRow) == abs(col - currCol)) {
-            // Stop timing for this isSafe call
-            auto end = chrono::high_resolution_clock::now();
-            totalIsSafeTime += chrono::duration<double>(end - start).count(); // Accumulate time
+        // Columns are 1-based
+        int placedCol = i + 1;
+
+        // Check if the queen is on the same diagonal
+        if(abs(placedRow - currRow) == 
+                          abs(placedCol - currCol)) {
             return false; // Not safe
         }
     }
 
-    // Stop timing for this isSafe call
-    auto end = chrono::high_resolution_clock::now();
-    totalIsSafeTime += chrono::duration<double>(end - start).count(); // Accumulate time
-    return true; // Safe to place the queen
+    // Safe to place the queen
+    return true; 
 }
 
-// Recursive function to generate all possible solutions
-void nQueenUtil(int col, int n, vector<int>& board, int& solutionCount, int& callCount, double& totalRecursiveTime) {
-    callCount++;  // Increment the call counter
+// Recursive function to generate all possible permutations
+void nQueenUtil(int col, int n, vector<int>& board, 
+  vector<vector<int>>& result, vector<bool>& visited) {
 
-    // Start timing for this recursive call
-    auto start = chrono::high_resolution_clock::now();
+    // If all queens are placed, add into result
+    if(col > n) {
+        result.push_back(board);
+        return;
+    }
 
-    if (col == n) {
-        solutionCount++;  // Increment the solution counter
-    } else {
-        for (int row = 0; row < n; ++row) {
-            if (isSafe(board, row, col)) {
-                board[col] = row;  // Place the queen
-                nQueenUtil(col + 1, n, board, solutionCount, callCount, totalRecursiveTime);  // Recur to place the next queen
+    // Try placing a queen in each row
+    // of the current column
+    for(int row = 1; row <= n; ++row) {
+
+        // Check if the row is already used
+        if(!visited[row]) {
+            
+            // Check if it's safe to place the queen
+            if(isSafe(board, row, col)) {
+
+                // Mark the row as used
+                visited[row] = true; 
+
+                // Place the queen
+                board.push_back(row); 
+
+                // Recur to place the next queen
+                nQueenUtil(col + 1, n, board,
+                             result, visited);
+
+                // Backtrack: remove the queen
+                board.pop_back(); 
+                visited[row] = false; // Unmark row
             }
         }
     }
-
-    // Stop timing for this recursive call
-    auto end = chrono::high_resolution_clock::now();
-    chrono::duration<double> elapsed = end - start;
-
-    // Add the elapsed time to the total recursive time
-    totalRecursiveTime += elapsed.count();
 }
 
-// Main function to find all distinct solutions to the n-queens puzzle
-int nQueen(int n) {
-    vector<int> board(n, -1);  // Current board configuration (n columns, initialized to -1)
-    int solutionCount = 0;
-    int callCount = 0;  // Counter for recursive calls
-    double totalRecursiveTime = 0.0;  // Total time for all recursive calls
+// Main function to find all distinct 
+// result to the n-queens puzzle
+vector<vector<int>> nQueen(int n) {
+    vector<vector<int>> result; 
 
-    nQueenUtil(0, n, board, solutionCount, callCount, totalRecursiveTime);  // Start solving from the first column
+    // Current board configuration
+    vector<int> board; 
+
+    // Track used rows
+    vector<bool> visited(n + 1, false); 
+
     
-    cout << "Total number of recursive calls: " << callCount << endl;  // Output the call count
-    cout << "Total time from all recursive calls: " << totalRecursiveTime << " seconds" << endl;  // Print the total time
-    cout << "Total number of isSafe calls: " << isSafeCallCount << endl; // Output the isSafe call count
-    cout << "Total time from all isSafe calls: " << totalIsSafeTime << " seconds" << endl; // Print the total time for isSafe
+    // Start timing
+    auto start = chrono::high_resolution_clock::now();
 
-    return solutionCount;
+    // Start solving from the first column
+    nQueenUtil(1, n, board, result, visited);
+
+    // Stop timing
+    auto end = chrono::high_resolution_clock::now();
+    elapsed = end - start;
+
+    return result; 
 }
 
 int main() {
-    int n = 4;  // Example for N = 4 (can change to other values)
-    
-    // Start timing for the overall execution
-    auto start = chrono::high_resolution_clock::now();
-    
-    // Call the N-Queen function
-    int result = nQueen(n);
-    
-    // Stop timing for the overall execution
-    auto end = chrono::high_resolution_clock::now();
-    chrono::duration<double> totalElapsed = end - start;
+    int n = 16; 
 
-    // Output the results
-    cout << "Number of solutions for " << n << "-Queens: " << result << endl;
-    cout << "Total execution time: " << totalElapsed.count() << " seconds" << endl;
+    vector<vector<int>> result = nQueen(n); 
 
+    // for(auto &res : result) {
+    //     cout << "[";
+    //     for(int i = 0; i < n; ++i) {
+    //         cout << res[i]; 
+    //         if(i != n - 1) cout << ", "; 
+    //     }
+    //     cout << "]\n";
+    // }
+
+    cout << "Execution time: " << elapsed.count() << " seconds" << endl;
     return 0;
 }

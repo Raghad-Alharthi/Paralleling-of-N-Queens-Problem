@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <vector>
+#include <iostream>
+#include <chrono>
 using namespace std;
 
 // Function to check if the current placement is safe
@@ -78,8 +80,11 @@ vector<vector<int>> nQueen(int n) {
 }
 
 int main() {
-    int n = 4; 
+    int n = 14; 
     
+    // Start timing
+    auto start = chrono::high_resolution_clock::now();
+
     vector<vector<int>> result = nQueen(n); 
 
     for(auto &res : result) {
@@ -90,5 +95,10 @@ int main() {
         }
         cout << "]\n";
     }
+
+    // Stop timing
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed = end - start;
+    cout << "Execution time: " << elapsed.count() << " seconds" << endl;
     return 0;
 }
