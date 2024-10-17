@@ -14,8 +14,8 @@ The project also includes a benchmarking feature to measure the performance of t
 - Prepares the groundwork for future parallelization using OpenMP or multithreading.
 
 ## About the Code:
-all rights for this code is for GeeksForGeeks.org, find original code here https://www.geeksforgeeks.org/printing-solutions-n-queen-problem/
-we only made some modifications sush as:
+all rights for this code is for GeeksForGeeks.org, find original code here https://www.geeksforgeeks.org/printing-solutions-n-queen-problem/ or in Original Code.cpp
+we only made some modifications sush as (in file UpdatedNQueens.cpp):
 - Adding timers (for benchmarking purposes)
 - Deleting vector that save all possible solutions and only printing number of possible solutions.
 
