@@ -39,6 +39,9 @@ This project is a collaborative effort by:
 
 - **Raghad Alharthi** (GitHub:(https://github.com/Raghad-Alharthi))
 - **Rawdhah Mansour** (GitHub: (--))
+- **Shuhd Bin Ajaj** (GitHub: (--))
+- **Haneen Al-Ghzaly** (GitHub: (--))
+- **Fatemah Alshammasi** (GitHub: (--))
 
 
 NOTE: this project is for Parallel Computer Architecture course, with supervision of **Ms.Rabab Alkhalifah**
