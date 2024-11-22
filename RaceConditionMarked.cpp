@@ -31,7 +31,7 @@ void nQueenUtil(int col, int n, vector<int>& board,
 
     // If all queens are placed, add into result
     if(col > n) {
-        result.push_back(board);
+        result.push_back(board); // ⚠️ RACE CONDITION: `result` is shared across threads
         return;
     }
 
@@ -46,18 +46,18 @@ void nQueenUtil(int col, int n, vector<int>& board,
             if(isSafe(board, row, col)) {
 
                 // Mark the row as used
-                visited[row] = true; 
+                visited[row] = true; // ⚠️ RACE CONDITION: `visited` is shared across threads
 
                 // Place the queen
-                board.push_back(row); 
+                board.push_back(row); // ⚠️ RACE CONDITION: `board` is shared across threads
 
                 // Recur to place the next queen
                 nQueenUtil(col + 1, n, board,
                              result, visited);
 
                 // Backtrack: remove the queen
-                board.pop_back(); 
-                visited[row] = false; // Unmark row
+                board.pop_back(); // ⚠️ RACE CONDITION: `board` is shared across threads
+                visited[row] = false; // ⚠️ RACE CONDITION: `visited` is shared across threads
             }
         }
     }
@@ -66,13 +66,13 @@ void nQueenUtil(int col, int n, vector<int>& board,
 // Main function to find all distinct 
 // result to the n-queens puzzle
 vector<vector<int>> nQueen(int n) {
-    vector<vector<int>> result; 
+    vector<vector<int>> result;  // ⚠️ RACE CONDITION: Shared across threads
 
     // Current board configuration
-    vector<int> board; 
+    vector<int> board;  // ⚠️ RACE CONDITION: Shared across threads
 
     // Track used rows
-    vector<bool> visited(n + 1, false); 
+    vector<bool> visited(n + 1, false);  // ⚠️ RACE CONDITION: Shared across threads
 
     // Start solving from the first column
     nQueenUtil(1, n, board, result, visited);
