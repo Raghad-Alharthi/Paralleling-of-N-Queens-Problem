@@ -2,6 +2,12 @@
     "files.associations": {
         "utility": "cpp",
         "iostream": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "chrono": "cpp"
+    },
+    "C_Cpp.files.exclude": {
+        
+        "**/.vscode": true,
+        "**/.vs": true
     }
 }

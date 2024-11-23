@@ -21,7 +21,12 @@ bool isSafe(const vector<int>& board, int currRow, int currCol) {
 // Recursive function to generate all possible permutations
 void nQueenUtil(int col, int n, vector<int>& board, vector<vector<int>>& result, vector<bool>& visited) {
     if (col > n) {
-        result.push_back(board);  // RACE CONDITION
+        try{
+            result.push_back(board);  // RACE CONDITION
+        }
+        catch(...){
+
+        }
         return;
     }
 
@@ -65,7 +70,7 @@ vector<vector<int>> nQueen(int n) {
 }
 
 int main() {
-    int n = 8; 
+    int n = 12; 
 
     // Start timing
     auto start = chrono::high_resolution_clock::now();
